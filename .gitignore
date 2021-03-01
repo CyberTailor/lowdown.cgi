@@ -1,0 +1,7 @@
+header.html
+footer.html
+
+*.md
+
+# backup files
+*~
