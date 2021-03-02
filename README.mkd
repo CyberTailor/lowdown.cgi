@@ -1,0 +1,65 @@
+Use this simple CGI script to write your websites/blogs/homepages in Markdown
+without relying on bloated static website generators.
+
+## Installation
+The only dependency is [lowdown](https://kristaps.bsd.lv/lowdown/) but you can
+edit [cgi-bin/lowdown.cgi](/lowdown.cgi/tree/cgi-bin/lowdown.cgi) to use any
+other markdown-to-html translator. It's that simple lmao.
+
+The script receives `$MARKDOWN_FILENAME` env variable.
+
+### Nginx
+This is an example config section for nginx using fcgiwrap.
+```nginx
+location / {
+    root /var/www/htdocs;
+    try_files $uri @lowdown;
+}
+
+location @lowdown {
+    root /var/www;
+
+    set $fn $document_root$document_uri;
+
+    if (-d $fn) {
+        set $fn $fn/index.md;
+    }
+    if (!-f $fn) {
+        return 404;
+    }
+    include             fastcgi_params;
+    fastcgi_param       MARKDOWN_FILENAME $fn;
+    fastcgi_param       SCRIPT_FILENAME $document_root/cgi-bin/lowdown.cgi;
+    fastcgi_pass        unix:/run/fcgiwrap.sock-1;
+}
+```
+
+## Usage
+Every directory that has markdown files should also have `header.html` and
+`footer.html` in it. Use symlinks if you need the same template in multiple
+folders.
+
+See an example directory layout.
+```
+/var/www
+├── cgi-bin
+│   └── lowdown.cgi
+├── blog
+│   ├── footer.html
+│   ├── header.html
+│   └── index.md
+├── htdocs
+│   ├── icon.png
+│   └── styles.css
+├── about.md
+├── footer.html
+├── header.html
+└── index.md
+```
+
+## Contributing
+Patches and pull requests are welcome. Please use either
+[git-send-email(1)](https://git-send-email.io/) or
+[git-request-pull(1)](https://git-scm.com/docs/git-request-pull), addressed to
+cybertailor@gmail.com.
+
