@@ -1,3 +1,4 @@
+# lowdown.cgi
 Use this simple CGI script to write your websites/blogs/homepages in Markdown
 without relying on bloated static website generators.
 
