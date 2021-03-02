@@ -1,7 +1,9 @@
 header.html
 footer.html
 
+# for your content uwu
 *.md
+htdocs/*
 
 # backup files
 *~
