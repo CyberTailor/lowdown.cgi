@@ -10,10 +10,10 @@ bool_arg_from_env () {
     name=$3
 
     case $value in
-        [Yy]*|[Tt]*|1)
+        [Yy]*|[Tt]*|on|ON|1)
             ARGS="$ARGS --$prefix-$name"
             ;;
-        [Nn]*|[Ff]*|0)
+        [Nn]*|[Ff]*|off|OFF|0)
             ARGS="$ARGS --$prefix-no-$name"
             ;;
     esac
