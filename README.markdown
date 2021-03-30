@@ -16,7 +16,7 @@ Installation
 
 If your server supports FastCGI, it's advised to pass `MARKDOWN_FILENAME`
 parameter. Otherwise, lowdown.cgi defaults to `$DOCUMENT_ROOT$DOCUMENT_URI` and
-lowdown-gemini.cgi defaults to `$GEMINI_DOCUMENT_ROOT$GEMINI_URL_PATH`.
+lowdown-gemini.cgi defaults to `$PATH_TRANSLATED`.
 
 ### Nginx
 This is an example config section for nginx using fcgiwrap.
@@ -67,7 +67,8 @@ See an example directory layout.
     ├── about.md
     ├── footer.html
     ├── header.html
-    └── index.md
+    ├── index.md
+    └── lowdown_params
 
 ### FastCGI Parameters
 ```rst
@@ -112,7 +113,7 @@ See an example directory layout.
 Contributing
 ------------
 Patches and pull requests are welcome. Please use either [git-send-email(1)][1]
-or [git-request-pull(1)][2], addressed to cybertailor@gmail.com.
+or [git-request-pull(1)][2], addressed to <cyber@sysrq.in>.
 
 [1]: https://git-send-email.io/
 [2]: https://git-scm.com/docs/git-request-pull

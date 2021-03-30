@@ -13,7 +13,7 @@ get_filename () {
     [ "$MD" ] && return
 
     if out_gmi; then
-        MD="${GEMINI_DOCUMENT_ROOT?}${GEMINI_URL_PATH?}"
+        MD="${PATH_TRANSLATED?}"
     else
         MD="${DOCUMENT_ROOT?}${DOCUMENT_URI?}"
     fi
@@ -43,9 +43,12 @@ if out_gmi; then
     args="-Tgemini"
     ext=gmi
 else
-    args="-Thtml"
+    args="-Thtml --html-no-skiphtml --html-no-owasp --html-no-escapehtml"
     ext=html
 fi
+
+get_filename || exit 1
+cd "$(dirname "$MD")" || exit 1
 
 arg_html "$HTML_SKIP_HTML" skiphtml
 arg_html "$HTML_ESCAPE"    escapehtml
@@ -78,9 +81,6 @@ arg_parse "$COMMONMARK" cmark
 arg_parse "$DEFLIST"    deflists
 arg_parse "$IMG_EXT"    img-ext
 
-get_filename
-cd "$(dirname "$MD")" || exit 1
-
 if out_gmi; then
     printf "20 text/gemini\r\n"
 else
@@ -88,6 +88,6 @@ else
     printf "Content-Type: text/html\r\n\n"
 fi
 
-cat header.$ext
-lowdown --html-no-skiphtml --html-no-owasp --html-no-escapehtml $args "$MD"
-cat footer.$ext
+cat ./header.$ext
+lowdown $args "$MD"
+cat ./footer.$ext
