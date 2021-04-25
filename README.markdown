@@ -43,6 +43,13 @@ location @lowdown {
     fastcgi_param       SCRIPT_FILENAME $document_root/cgi-bin/lowdown.cgi;
     fastcgi_pass        unix:/run/fcgiwrap.sock-1;
 }
+
+location /sitemap.xml {
+    root /var/www;
+    include         fastcgi_params;
+    fastcgi_param   SCRIPT_FILENAME $document_root/cgi-bin/sitemap.cgi;
+    fastcgi_pass    unix:/run/fcgiwrap.sock-1;
+}
 ```
 
 Usage
@@ -55,8 +62,7 @@ See an example directory layout.
 
     /var/www
     ├── cgi-bin
-    │   ├── lowdown.cgi
-    │   └── lowdown-gemini.cgi -> ./lowdown.cgi
+    │   └── ...
     ├── blog
     │   ├── footer.html -> /var/www/footer.html
     │   ├── header.html
@@ -70,7 +76,7 @@ See an example directory layout.
     ├── index.md
     └── lowdown_params
 
-### FastCGI Parameters
+### CGI Parameters
 ```rst
 +-------------------|---------|----------------------------------------------+
 | Variable name     | Default | Description                                  |

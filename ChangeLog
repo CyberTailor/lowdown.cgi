@@ -1,3 +1,8 @@
+2021-04-26  Anna  <cyber@sysrq.in>
+
+	* sitemap.cgi: this script generates an XML sitemap for search
+	engines
+
 2021-03-23  Anna  <cybertailor@gmail.com>
 
 	* lowdown-gemini.cgi: this script outputs Gemtext instead of HTML
@@ -14,6 +19,6 @@
 
 2021-03-02  Anna  <cybertailor@gmail.com>
 
-	* lowdown.cgi: receive a single FastCGI parameter, dumps the contents of
-	header.html, footer.html and lowdown output
+	* lowdown.cgi: receives a single FastCGI parameter, dumps the
+	contents of header.html, footer.html and lowdown output
 
