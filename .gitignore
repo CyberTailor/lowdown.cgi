@@ -1,11 +1,8 @@
-header.html
-footer.html
-header.gmi
-footer.gmi
-
-# for your content uwu
-*.md
-htdocs/*
-
-# backup files
-*~
+*
+!.gitignore
+!ChangeLog
+!LICENSE
+!cgi-bin/lowdown.cgi
+!cgi-bin/lowdown-gemini.cgi
+!cgi-bin/sitemap.cgi
+!lowdown.cgi.8

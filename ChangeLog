@@ -1,3 +1,10 @@
+2021-11-06  Anna  <cyber@sysrq.in>
+
+	* lowdown.cgi: use single $LOWDOWN_OPTS instead of lots of separate
+	environment variables.
+
+	* lowdown.cgi.8: add manpage
+
 2021-04-26  Anna  <cyber@sysrq.in>
 
 	* sitemap.cgi: this script generates an XML sitemap for search

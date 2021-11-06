@@ -1,0 +1,128 @@
+.\" SPDX-FileType: DOCUMENTATION
+.\" SPDX-License-Identifier: WTFPL
+.\" SPDX-FileCopyrightText: 2021 Anna <cyber@sysrq.in>
+.Dd November 6, 2021
+.Dt LOWDOWN.CGI 8
+.Os
+.Sh NAME
+.Nm lowdown.cgi ,
+.Nm lowdown-gemini.cgi
+.Nd CGI wrappers around lowdown
+.Sh DESCRIPTION
+The
+.Nm
+program generates HTML and Gemtext documents from Markdown using
+.Xr lowdown 1 .
+.Sh INSTALLING
+.Bl -enum -width 1n
+.It
+Install
+.Lk https://kristaps.bsd.lv/lowdown lowdown
+.
+.It
+Clone this repository:
+.Dl $ git clone git://sysrq.in:/lowdown.cgi /var/www/mysite
+.Pp
+or add it as a submodule:
+.Bd -literal -offset indent -compact
+$ git submodule add git://sysrq.in:/lowdown.cgi
+$ ln -s ./lowdown.cgi/cgi-bin cgi-bin
+.Ed
+.
+.It
+Setup your web and/or gemini server
+.Po see
+.Sx ENVIRONMENT
+and
+.Sx EXAMPLES
+.Pc .
+.El
+.Sh ENVIRONMENT
+.Bl -tag -width MARKDOWN_FILENAME -compact
+.It Ev LOWDOWN_OPTS
+Options for
+.Xr lowdown 1 .
+.
+.It Ev MARKDOWN_FILENAME
+Absolute path to a Markdown file.
+If unset,
+.Ql $PATH_TRANSLATED
+is used for Gemini and
+.Ql $DOCUMENT_ROOT$DOCUMENT_URI
+for web.
+.El
+.Sh FILES
+The
+.Nm
+program uses the following files if they can be found in the same directory as
+.Ev $MARKDOWN_FILENAME :
+.Pp
+.Bl -tag -width Ds -compact
+.It Xo
+.Pa header.html ,
+.Pa header.gmi
+.Xc
+Some text to be displayed before rendered Markdown article.
+.
+.It Xo
+.Pa footer.html ,
+.Pa footer.gmi
+.Xc
+Some text to be displayed after rendered Markdown article.
+.El
+.Pp
+Use lowdown's
+.Fl Fl out-standalone
+option if you don't need custom header or footer.
+.Sh EXIT STATUS
+.Ex -std
+.Sh EXAMPLES
+.Ss Example directory layout
+.Bd -literal -offset indent
+/var/www
+├── cgi-bin
+│   └── ...
+├── blog
+│   ├── footer.html -> /var/www/footer.html
+│   ├── header.html
+│   └── index.md
+├── htdocs
+│   ├── icon.png
+│   └── styles.css
+├── about.md
+├── footer.html
+├── header.html
+├── index.md
+└── lowdown_params
+.Ed
+.Ss Example Nginx configuration
+.Bd -literal
+location / {
+    root /var/www/htdocs;
+    try_files $uri @lowdown;
+}
+
+location @lowdown {
+    root /var/www;
+
+    set $fn $document_root$document_uri;
+
+    if (-d $fn) {
+        set $fn $fn/index.md;
+    }
+    if (!-f $fn) {
+        return 404;
+    }
+    include             fastcgi_params;
+    fastcgi_param       MARKDOWN_FILENAME $fn;
+    fastcgi_param       SCRIPT_FILENAME $document_root/cgi-bin/lowdown.cgi;
+    fastcgi_pass        unix:/run/fcgiwrap.sock-1;
+}
+
+location /sitemap.xml {
+    root /var/www;
+    include         fastcgi_params;
+    fastcgi_param   SCRIPT_FILENAME $document_root/cgi-bin/sitemap.cgi;
+    fastcgi_pass    unix:/run/fcgiwrap.sock-1;
+}
+.Ed
