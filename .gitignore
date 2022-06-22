@@ -5,4 +5,5 @@
 !cgi-bin/lowdown.cgi
 !cgi-bin/lowdown-gemini.cgi
 !cgi-bin/sitemap.cgi
+!cgi-bin/sitemap_print_url.sh
 !lowdown.cgi.8

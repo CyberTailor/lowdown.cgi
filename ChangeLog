@@ -1,3 +1,7 @@
+2022-06-23  Anna  <cyber@sysrq.in>
+
+	* sitemap.cgi is now POSIX-compliant
+
 2021-11-06  Anna  <cyber@sysrq.in>
 
 	* lowdown.cgi: use single $LOWDOWN_OPTS instead of lots of separate
